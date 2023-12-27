@@ -2,13 +2,24 @@ const chai = require("chai");
 const assert = chai.assert;
 
 const Translator = require("../components/translator.js");
+const translator = new Translator();
 
 suite("Unit Tests", () => {
   suite("Translate American to British English", () => {
     test("Mangoes are my favorite fruit", (done) => {
+      let text = "Mangoes are my favorite fruit";
+      let locale = "american-to-british";
+      let result = translator.translate(text, locale);
+      assert.include(result, "favourite");
+      assert.include(result, '<span class="highlight">');
       done();
     });
-    test("I ate yogurt for breakfast.", (done) => {
+    test.only("I ate yogurt for breakfast.", (done) => {
+      let text = "I ate yogurt for breakfast.";
+      let locale = "american-to-british";
+      let result = translator.translate(text, locale);
+      assert.include(result, "yoghurt");
+      assert.include(result, '<span class="highlight">');
       done();
     });
     test("We had a party at my friend's condo.", (done) => {
