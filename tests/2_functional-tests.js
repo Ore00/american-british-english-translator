@@ -10,7 +10,26 @@ let Translator = require("../components/translator.js");
 suite("Functional Tests", () => {
   suite("POST request to /api/translate -> Translation with", () => {
     test("text and locale fields:", (done) => {
-      done();
+      let translation = {
+        text: "Mangoes are my favorite fruit.",
+        translation:
+          'Mangoes are my <span class="highlight">favourite</span> fruit.',
+      };
+      requester
+        .post("/api/translate")
+        .send({
+          text: translation.text,
+          locale: "american-to-british",
+        })
+        .end(function (err, res) {
+          if (err) {
+            console.error({ error: err });
+            done(err);
+          }
+          assert.deepEqual(res.body, translation);
+          assert.equal(res.status, 200);
+          done();
+        });
     });
     test("text and invalid locale field:", (done) => {
       requester
@@ -77,7 +96,25 @@ suite("Functional Tests", () => {
         });
     });
     test("text that needs no translation:", (done) => {
-      done();
+      let translation = {
+        text: "Mangoes are my fruit.",
+        translation: "Everything looks good to me!",
+      };
+      requester
+        .post("/api/translate")
+        .send({
+          text: translation.text,
+          locale: "american-to-british",
+        })
+        .end(function (err, res) {
+          if (err) {
+            console.error({ error: err });
+            done(err);
+          }
+          assert.deepEqual(res.body, translation);
+          assert.equal(res.status, 200);
+          done();
+        });
     });
   });
 });
